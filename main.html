@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Cyber Services</title>
+
+<style>
+
+body{
+background:#0a0a0a;
+color:#00fff7;
+font-family:Orbitron, sans-serif;
+margin:0;
+padding:0;
+}
+
+header{
+text-align:center;
+padding:30px;
+font-size:35px;
+color:#ff00ff;
+text-shadow:0 0 20px #ff00ff;
+}
+
+.container{
+width:900px;
+margin:auto;
+}
+
+button{
+background:black;
+border:2px solid #00fff7;
+color:#00fff7;
+padding:12px 25px;
+margin:10px;
+cursor:pointer;
+font-size:16px;
+transition:0.3s;
+}
+
+button:hover{
+background:#00fff7;
+color:black;
+box-shadow:0 0 20px #00fff7;
+}
+
+.card{
+border:1px solid #ff00ff;
+padding:20px;
+margin:15px 0;
+background:rgba(0,0,0,0.7);
+box-shadow:0 0 15px #ff00ff;
+}
+
+input, textarea{
+width:100%;
+background:black;
+border:1px solid #00fff7;
+color:#00fff7;
+padding:10px;
+margin-top:10px;
+}
+
+.hidden{
+display:none;
+}
+
+h2{
+color:#00fff7;
+text-shadow:0 0 10px #00fff7;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>CYBER SERVICE MARKET</header>
+
+<div class="container">
+
+<div id="menu">
+
+<button onclick="openBuy()">🛒 Купить услугу</button>
+<button onclick="openSell()">💰 Выполнить услугу</button>
+
+</div>
+
+<div id="buy" class="hidden">
+
+<h2>Создать заявку</h2>
+
+<textarea id="requestText" placeholder="Опиши услугу"></textarea>
+<br>
+<button onclick="createRequest()">Создать</button>
+<button onclick="back()">Назад</button>
+
+</div>
+
+<div id="sell" class="hidden">
+
+<h2>Активные заявки</h2>
+
+<div id="requests"></div>
+
+<button onclick="back()">Назад</button>
+
+</div>
+
+</div>
+
+<script>
+
+let requests = []
+
+function openBuy(){
+document.getElementById("menu").classList.add("hidden")
+document.getElementById("buy").classList.remove("hidden")
+}
+
+function openSell(){
+document.getElementById("menu").classList.add("hidden")
+document.getElementById("sell").classList.remove("hidden")
+
+renderRequests()
+}
+
+function back(){
+
+document.getElementById("menu").classList.remove("hidden")
+document.getElementById("buy").classList.add("hidden")
+document.getElementById("sell").classList.add("hidden")
+
+}
+
+function createRequest(){
+
+let text=document.getElementById("requestText").value
+
+if(text=="") return alert("Напиши услугу")
+
+requests.push({
+text:text,
+responses:[]
+})
+
+document.getElementById("requestText").value=""
+
+alert("Заявка создана")
+
+}
+
+function renderRequests(){
+
+let container=document.getElementById("requests")
+
+container.innerHTML=""
+
+requests.forEach((req,index)=>{
+
+let card=document.createElement("div")
+
+card.className="card"
+
+card.innerHTML=`
+
+<p>${req.text}</p>
+
+<button onclick="respond(${index})">Откликнуться</button>
+
+<div id="resp${index}"></div>
+
+`
+
+container.appendChild(card)
+
+})
+
+}
+
+function respond(i){
+
+let text=prompt("Напиши предложение")
+
+if(!text) return
+
+requests[i].responses.push(text)
+
+alert("Ответ отправлен")
+
+}
+
+</script>
+
+</body>
+</html>
